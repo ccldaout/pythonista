@@ -3,6 +3,9 @@
 import binascii
 import ui
 import glob
+import dialogs
+import os
+
 from mdialog import MessageDialog
 from utils import Config
 from tpp import ipc
@@ -10,7 +13,7 @@ from tpp import ipc
 CONFIG_PATH = '.admin.config'
 config = Config.load(CONFIG_PATH)
 
-PY_DIR = '../upy/'
+PY_DIR = '../esp32/upy/'
 
 class AdminCommand(object):
 
@@ -19,6 +22,7 @@ class AdminCommand(object):
         self.on_close = None
 
     def start(self, ip_address):
+        print ip_address
         self.cli = ipc.SimpleClient((ip_address, 2000), ipc.JSONPacker())
         self.cli.start()
 
@@ -46,6 +50,9 @@ class AdminCommand(object):
 
     def mkdir(self, path):
         self._send(['mkdir', path])
+        
+    def service(self, modname, port):
+        self._send(['service', modname, port])
 
     def reset(self):
         self.cli.send(['reset'])
@@ -71,6 +78,9 @@ class Admin(object):
 
         v = topv['connect']
         v.action = self.do_connect
+        
+        v = topv['service']
+        v.action = self.do_service
 
         v = topv['upload']
         v.action = self.do_upload
@@ -108,6 +118,13 @@ class Admin(object):
         v = ui.TextView()
 
         self.v_fileselection.reload()
+        
+    def do_service(self, sender):
+        #cands = [os.path.basename(f)[:-3] for f in glob.glob(PY_DIR+'service/*.py')]
+        #cands.remove('__init__')
+        #cands.remove('admin')
+        #mod = dialogs.list_dialog('services', cands)
+        self._admcmd.service('robot1', 2001)
 
     def do_upload(self, sender):
         self._mdiag.open()

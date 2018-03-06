@@ -1,11 +1,38 @@
 # coding: utf-8
 
 import ui
+import math
+
 from utils import Config
 from tpp import ipc
 
 CONFIG_PATH = '.drive.config'
 config = Config.load(CONFIG_PATH)
+
+class RobotCommand(object):
+
+    def __init__(self):
+        self.cli = None
+        self.on_close = None
+
+    def start(self, ip_address, portnum):
+        self.cli = ipc.SimpleClient((ip_address, portnum), ipc.JSONPacker())
+        self.cli.start()
+
+    def stop(self):
+        self.cli.close()
+        if self.on_close:
+            self.on_cloase()
+
+    def _send(self, msg):
+        self.cli.send(msg)
+        return self.cli.recv()[0] == 'success'
+
+    def enable(self):
+        return self._send(['enable'])
+
+    def duty(self, a_duty, b_duty):
+        self._send(['duty', a_duty, b_duty])
 
 class ControlPad(ui.View):
     def __init__(self):
@@ -13,7 +40,7 @@ class ControlPad(ui.View):
         self.center_x = 150.0 #self.bounds[2]/2
         self.center_y = 150.0 #self.bounds[3]/2
         self.half_width = self.center_x
-        self.move_threashold = 0.005
+        self.move_threashold = 0.1
         self.set_needs_display()
 
     def draw(self):
@@ -45,10 +72,11 @@ class ControlPad(ui.View):
     def touch_ended(self, touch):
         self.xy = (0, 0)
         self.vector(self.xy)
-        pass
 
 class RobotController(object):
     def __init__(self, topv):
+        self._robot = RobotCommand()
+        
         topv.background_color = '#2f2f2f'
 
         v_ipaddress = topv['IP_address']
@@ -75,7 +103,23 @@ class RobotController(object):
         self.v_message.text = text[-500:]
 
     def _vector(self, xy):
-        self.message('%f, %f' % xy)
+        x, y = xy
+        r = math.sqrt(x**2 + y**2)
+        if r > 1.0:
+            y /= r
+            r = 1.0
+        if y > 0 and x > 0:
+            left, right = r, y
+        elif y > 0 and x < 0:
+            left, right = y, r
+        elif y < 0 and x < 0:
+            left, right = y, -r
+        elif y < 0 and x > 0:
+            left, right = -r, y
+        else:
+            left, right = 0, 0
+        self.message('%f, %f' % (left, right))
+        self._robot.duty(right, left)
 
     def enter_ipaddress(self, sender):
         self.v_message.text = sender.text
@@ -83,10 +127,10 @@ class RobotController(object):
         config.save()
 
     def do_connect(self, sender):
-        pass
+        self._robot.start(config.ip_address, 2001)
 
     def do_start(self, sender):
-        pass
+        self._robot.enable()
 
     def do_reset(self, sender):
         pass

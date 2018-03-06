@@ -49,17 +49,17 @@
 
         ],
         "attributes" : {
-          "font_size" : 18,
           "border_width" : 0,
-          "corner_radius" : 6,
+          "name" : "ipc_status",
+          "font_name" : "<System>",
           "frame" : "{{195, 254}, {150, 32}}",
           "uuid" : "70E50C67-31F0-4AE5-9CB0-19DA264A7ED8",
+          "corner_radius" : 6,
           "class" : "Label",
           "alignment" : "center",
           "text" : "Not Ready",
-          "background_color" : "RGBA(0.682353,0.682353,0.682353,1.000000)",
-          "name" : "ipc_status",
-          "font_name" : "<System>"
+          "font_size" : 18,
+          "background_color" : "RGBA(0.682353,0.682353,0.682353,1.000000)"
         }
       },
       {
@@ -128,15 +128,15 @@
         "attributes" : {
           "flex" : "WH",
           "data_source_items" : "",
-          "uuid" : "A716C620-A575-45C4-A329-19446776034F",
+          "row_height" : 44,
           "frame" : "{{170, 170}, {200, 200}}",
+          "uuid" : "A716C620-A575-45C4-A329-19446776034F",
           "data_source_number_of_lines" : 1,
           "class" : "TableView",
           "background_color" : "RGBA(1.0, 1.0, 1.0, 1.0)",
           "data_source_delete_enabled" : false,
           "data_source_font_size" : 14,
-          "name" : "file_selection",
-          "row_height" : 44
+          "name" : "file_selection"
         }
       },
       {
@@ -157,15 +157,33 @@
           "name" : "clear_selection",
           "font_size" : 15
         }
+      },
+      {
+        "selected" : false,
+        "frame" : "{{406, 70}, {102, 32}}",
+        "class" : "Button",
+        "nodes" : [
+
+        ],
+        "attributes" : {
+          "frame" : "{{230, 254}, {80, 32}}",
+          "tint_color" : "RGBA(0.235294,0.235294,0.235294,1.000000)",
+          "title" : "SERVICE",
+          "uuid" : "8AFA4FA2-CD4F-45CD-A0C9-FC3E1FE179D1",
+          "background_color" : "RGBA(0.866667,0.909804,1.000000,1.000000)",
+          "class" : "Button",
+          "name" : "service",
+          "font_size" : 15
+        }
       }
     ],
     "attributes" : {
-      "name" : "",
+      "flex" : "",
       "enabled" : true,
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "name" : "",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
-      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
-      "flex" : ""
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)"
     }
   }
 ]
