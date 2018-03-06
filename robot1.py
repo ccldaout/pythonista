@@ -61,18 +61,6 @@ class ControlPad(ui.View):
         (self.center_y - y)/self.half_width)
         self.vector(self.xy)
 
-    def touch_moved(self, touch):
-        x, y = touch.location
-        x, y = ((x - self.center_x)/self.half_width,
-        (self.center_y - y)/self.half_width)
-        if (self.xy[0] - x)**2 + (self.xy[1] - y)**2 > self.move_threashold:
-            self.xy = x, y
-            self.vector(self.xy)
-
-    def touch_ended(self, touch):
-        self.xy = (0, 0)
-        self.vector(self.xy)
-
 class RobotController(object):
     def __init__(self, topv):
         self._robot = RobotCommand()
@@ -87,20 +75,11 @@ class RobotController(object):
         v_button_connect = topv['connect']
         v_button_connect.action = self.do_connect
 
-        v_button_start = topv['start']
-        v_button_start.action = self.do_start
-
-        v_button_reset = topv['reset']
-        v_button_reset.action = self.do_reset
-
-        self.v_message = topv['message']
-
         v_control_pad = topv['control_pad']
         v_control_pad.vector = self._vector
-
-    def message(self, text):
-        text = self.v_message.text + '\n' + text
-        self.v_message.text = text[-500:]
+        
+        self.v_A_ratio = topv['A_ratio']
+        self.v_B_ratio = topv['B_ratio']
 
     def _vector(self, xy):
         x, y = xy
@@ -118,7 +97,10 @@ class RobotController(object):
             left, right = -r, y
         else:
             left, right = 0, 0
-        self.message('%f, %f' % (left, right))
+        left = round(left, 1)
+        right = round(right, 1)
+        self.v_A_ratio.text = '%2.1f' % left
+        self.v_B_ratio.text = '%2.1f' % right
         self._robot.duty(right, left)
 
     def enter_ipaddress(self, sender):
@@ -128,14 +110,11 @@ class RobotController(object):
 
     def do_connect(self, sender):
         self._robot.start(config.ip_address, 2001)
+        if self._robot.enable():
+            sender.enabled = False
 
-    def do_start(self, sender):
-        self._robot.enable()
 
-    def do_reset(self, sender):
-        pass
-
-v = ui.load_view('drive-ipad')
+v = ui.load_view('robot1-ipad')
 robot_controller = RobotController(v)
 v.present('sheet')
 

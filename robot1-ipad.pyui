@@ -5,7 +5,7 @@
     "class" : "View",
     "nodes" : [
       {
-        "selected" : true,
+        "selected" : false,
         "frame" : "{{21, 15}, {317, 32}}",
         "class" : "TextField",
         "nodes" : [
@@ -70,75 +70,118 @@
       },
       {
         "selected" : false,
-        "frame" : "{{353, 193}, {112, 32}}",
+        "frame" : "{{21, 62}, {438, 111}}",
+        "class" : "View",
+        "nodes" : [
+
+        ],
+        "attributes" : {
+          "frame" : "{{193, 208}, {100, 100}}",
+          "background_color" : "RGBA(1.000000,0.933333,0.933333,1.000000)",
+          "class" : "View",
+          "name" : "view1",
+          "uuid" : "AC1A1BA8-7BCB-4FA6-AA8A-95086694BC6E"
+        }
+      },
+      {
+        "selected" : false,
+        "frame" : "{{47, 77}, {180, 34}}",
+        "class" : "Slider",
+        "nodes" : [
+
+        ],
+        "attributes" : {
+          "flex" : "W",
+          "continuous" : true,
+          "frame" : "{{143, 241}, {200, 34}}",
+          "uuid" : "CEBA1BFB-DCF9-4B56-A479-DADE103C7C43",
+          "class" : "Slider",
+          "value" : 0.5,
+          "name" : "A_duty"
+        }
+      },
+      {
+        "selected" : false,
+        "frame" : "{{258.5, 77}, {180, 34}}",
+        "class" : "Slider",
+        "nodes" : [
+
+        ],
+        "attributes" : {
+          "flex" : "W",
+          "frame" : "{{143, 241}, {200, 34}}",
+          "value" : 0.5,
+          "class" : "Slider",
+          "name" : "B_duty",
+          "uuid" : "CEBA1BFB-DCF9-4B56-A479-DADE103C7C43"
+        }
+      },
+      {
+        "selected" : true,
+        "frame" : "{{187, 123}, {115, 38}}",
         "class" : "Button",
         "nodes" : [
 
         ],
         "attributes" : {
-          "action" : "",
-          "frame" : "{{230, 242}, {80, 32}}",
-          "tint_color" : "RGBA(0.462264,0.462264,0.462264,1.000000)",
-          "title" : "START",
-          "uuid" : "36825C0A-B6BA-4CEA-85E4-55EF149690A0",
-          "background_color" : "RGBA(1.000000,0.966667,0.900000,1.000000)",
+          "border_width" : 0,
+          "frame" : "{{203, 242}, {80, 32}}",
+          "tint_color" : "RGBA(0.358491,0.358491,0.358491,1.000000)",
+          "title" : "STOP",
+          "uuid" : "79374B3B-CDBB-4046-82EE-69412028DF7C",
           "class" : "Button",
-          "font_bold" : true,
-          "name" : "start",
+          "background_color" : "RGBA(1.000000,0.733333,0.733333,1.000000)",
+          "corner_radius" : 6,
+          "name" : "stop",
           "font_size" : 15
         }
       },
       {
         "selected" : false,
-        "frame" : "{{353, 238}, {112, 32}}",
-        "class" : "Button",
+        "frame" : "{{335, 193}, {130, 36}}",
+        "class" : "Label",
         "nodes" : [
 
         ],
         "attributes" : {
-          "action" : "",
-          "frame" : "{{230, 242}, {80, 32}}",
-          "tint_color" : "RGBA(0.464623,0.464623,0.464623,1.000000)",
-          "title" : "RESET",
-          "uuid" : "D61329BB-E82F-4A3A-AF88-56C7B4B1EBBB",
-          "background_color" : "RGBA(1.000000,0.866667,0.866667,1.000000)",
-          "class" : "Button",
-          "name" : "reset",
-          "font_size" : 15
-        }
-      },
-      {
-        "selected" : false,
-        "frame" : "{{21, 55}, {444, 130}}",
-        "class" : "TextView",
-        "nodes" : [
-
-        ],
-        "attributes" : {
-          "uuid" : "0F8B8E06-0BB8-495C-B6EB-24EA292EF4D9",
-          "font_size" : 14,
-          "background_color" : "RGBA(0.319182,0.326782,0.341981,1.000000)",
-          "frame" : "{{143, 158}, {200, 200}}",
-          "tint_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-          "editable" : false,
-          "alignment" : "left",
-          "autocorrection_type" : "default",
-          "text_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+          "font_size" : 18,
           "font_name" : "<System>",
-          "spellchecking_type" : "default",
-          "class" : "TextView",
-          "name" : "message",
-          "flex" : "WH"
+          "frame" : "{{168, 242}, {150, 32}}",
+          "uuid" : "FEA9C327-443B-4EF9-B2AE-81C54FE264D9",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "0.0",
+          "name" : "A_ratio",
+          "text_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)"
+        }
+      },
+      {
+        "selected" : false,
+        "frame" : "{{335, 237}, {130, 36}}",
+        "class" : "Label",
+        "nodes" : [
+
+        ],
+        "attributes" : {
+          "name" : "B_ratio",
+          "font_name" : "<System>",
+          "frame" : "{{168, 242}, {150, 32}}",
+          "uuid" : "FEA9C327-443B-4EF9-B2AE-81C54FE264D9",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "0.0",
+          "font_size" : 18,
+          "text_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)"
         }
       }
     ],
     "attributes" : {
-      "flex" : "",
+      "custom_class" : "",
       "enabled" : true,
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-      "custom_class" : ""
+      "flex" : ""
     }
   }
 ]
