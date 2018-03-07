@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import binascii
+import functools
 import ui
 import glob
 import dialogs
@@ -8,12 +9,23 @@ import os
 
 from p3.mdialog import MessageDialog
 from p3.utils import Config
-from tpp import ipc
+from tpp import uipc
 
 CONFIG_PATH = '.admin.config'
 config = Config.load(CONFIG_PATH)
 
 PY_DIR = '../esp32/upy/'
+
+def exc_false(f):
+    @functools.wraps(f)
+    def _f(*args, **kwargs):
+        try:
+            f(*args, **kwargs)
+            return True
+        except Exception as e:
+            print f.__name__, 'failure:', str(e)
+            return False
+    return _f
 
 class AdminCommand(object):
 
@@ -21,41 +33,40 @@ class AdminCommand(object):
         self.cli = None
         self.on_close = None
 
+    @exc_false
     def start(self, ip_address):
         print ip_address
-        self.cli = ipc.SimpleClient((ip_address, 2000), ipc.JSONPacker())
-        self.cli.start()
+        self.cli = uipc.client((ip_address, 2000))
 
+    @exc_false
     def stop(self):
         self.cli.close()
         if self.on_close:
             self.on_cloase()
 
-    def _send(self, msg):
-        self.cli.send(msg)
-        return self.cli.recv()[0] == 'success'
-
+    @exc_false
     def put(self, path):
         with open(PY_DIR+path, 'rb') as f:
-            if not self._send(['put_beg', path]):
-                return False
+            self.cli.put_beg(path)
             while True:
                 data = f.read(2048)
                 if not data:
                     break
                 data = binascii.hexlify(data)
-                if not self._send(['put_data', data]):
-                    return False
-            return self._send(['put_end', data])
+                self.cli.put_data(data)
+            return self.cli.put_end()
 
+    @exc_false
     def mkdir(self, path):
-        self._send(['mkdir', path])
+        self.cli.mkdir(path)
         
+    @exc_false
     def service(self, modname, port):
-        self._send(['service', modname, port])
+        self.cli.service(modname, port)
 
+    @exc_false
     def reset(self):
-        self.cli.send(['reset'])
+        self.cli.reset()
         self.stop()
 
 def list_uploadable():
