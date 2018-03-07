@@ -6,8 +6,8 @@ import glob
 import dialogs
 import os
 
-from mdialog import MessageDialog
-from utils import Config
+from p3.mdialog import MessageDialog
+from p3.utils import Config
 from tpp import ipc
 
 CONFIG_PATH = '.admin.config'
