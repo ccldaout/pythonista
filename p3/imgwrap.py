@@ -15,10 +15,10 @@ def str2image(data):
     img_w = int(math.ceil(math.sqrt(an/4)))
 
     b = bytearray(img_w * img_w * 4)
-    b[0] = 0xff & ((data_n      ) >> 24)
-    b[1] = 0xff & ((data_n <<  8) >> 24)
-    b[2] = 0xff & ((data_n << 16) >> 24)
-    b[3] = 0xff & ((data_n << 24) >> 24)
+    b[0] = 0xff & (data_n >> 24)
+    b[1] = 0xff & (data_n >> 16)
+    b[2] = 0xff & (data_n >>  8)
+    b[3] = 0xff & (data_n      )
     b[4:4+data_n] = data
 
     img = Image.new('RGBA', (img_w, img_w))
@@ -41,6 +41,7 @@ def image2str(img):
             bi += 4
 
     data_n = (b[0]<<24)|(b[1]<<16)|(b[2]<<8)|b[3]
+    print 'image2str:', nx, ny, data_n
     return b[4:4+data_n]
     
 def tar2image(files):
@@ -55,6 +56,7 @@ def tar2image(files):
 
 def image2tar(img):
     data = image2str(img)
+    print type(data), len(data)
     sf = StringIO(data)
     ar = tarfile.open(fileobj=sf, mode='r')
     return ar
