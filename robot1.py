@@ -1,13 +1,25 @@
 # coding: utf-8
 
-import ui
+import functools
 import math
+import ui
 
-from utils import Config
-from tpp import ipc
+from p3.utils import Config
+from tpp import uipc
 
 CONFIG_PATH = '.drive.config'
 config = Config.load(CONFIG_PATH)
+
+def exc_false(f):
+    @functools.wraps(f)
+    def _f(*args, **kwargs):
+        try:
+            f(*args, **kwargs)
+            return True
+        except Exception as e:
+            print f.__name__, 'failure:', str(e)
+            return False
+    return _f
 
 class RobotCommand(object):
 
@@ -15,24 +27,23 @@ class RobotCommand(object):
         self.cli = None
         self.on_close = None
 
+    @exc_false
     def start(self, ip_address, portnum):
-        self.cli = ipc.SimpleClient((ip_address, portnum), ipc.JSONPacker())
-        self.cli.start()
+        self.cli = uipc.client((ip_address, portnum))
 
+    @exc_false
     def stop(self):
         self.cli.close()
         if self.on_close:
             self.on_cloase()
 
-    def _send(self, msg):
-        self.cli.send(msg)
-        return self.cli.recv()[0] == 'success'
-
+    @exc_false
     def enable(self):
-        return self._send(['enable'])
+        return self.cli.enable()
 
+    @exc_false
     def duty(self, a_duty, b_duty):
-        self._send(['duty', a_duty, b_duty])
+        self.cli.duty(a_duty, b_duty)
 
 class ControlPad(ui.View):
     def __init__(self):
