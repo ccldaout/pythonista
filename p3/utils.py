@@ -1,6 +1,15 @@
 # coding: utf-8
 
 import cPickle
+import sys
+import os
+
+def self_path_nosuffix(name):
+    pypath = sys.modules[name].__file__
+    return os.path.splitext(pypath)[0]
+    
+def self_pyui(name):
+    return self_path_nosuffix(name) + '.pyui'
 
 class Config(object):
     @staticmethod

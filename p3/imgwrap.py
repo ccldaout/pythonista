@@ -31,7 +31,7 @@ def str2image(data):
     return img
 
 def image2str(img):
-    # img.mode == 'RGBA'
+    img.mode == 'RGBA'
     nx, ny = img.size
     b = bytearray(nx * ny * 4)
     bi = 0

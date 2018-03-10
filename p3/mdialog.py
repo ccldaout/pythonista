@@ -1,10 +1,11 @@
 # coding: utf-8
 
 import ui
+from p3.utils import self_pyui
 
 class MessageDialog(object):
     def __init__(self):
-        self.view = ui.load_view('mdialog')
+        self.view = ui.load_view(self_pyui(__name__))
         self.textview = self.view['message_view']
         self.ok_button = self.view['ok_button']
         self.ok_button.action = self.close
